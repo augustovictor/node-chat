@@ -1,21 +1,32 @@
-const path       = require('path');
-const express    = require('express');
-const http       = require('http');
-const socketIO   = require('socket.io');
+const path                = require('path');
+const express             = require('express');
+const http                = require('http');
+const socketIO            = require('socket.io');
 
-const publicPath = path.join(__dirname, '../public');
-const port       = process.env.PORT || 3000;
+const publicPath          = path.join(__dirname, '../public');
+const port                = process.env.PORT || 3000;
 
-const app        = express();
-const server     = http.createServer(app);
-const io         = socketIO(server);
+const app                 = express();
+const server              = http.createServer(app);
+const io                  = socketIO(server);
+const querystring         = require('querystring');
 
 const { generateMessage } = require('./utils/message');
+const { isRealString }    = require('./utils/validation');
 
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
     console.log('New user connected.');
+
+    socket.on('join', (params, callback) => {
+        const user = querystring.parse(params);
+        console.log(user);
+        if(!isRealString(user.name) || !isRealString(user.room)) {
+            callback('Name and room name are required');
+        }
+        callback();
+    });
 
     socket.emit('newMessageToClient', generateMessage('Admin', 'Welcome to the chat'));
 

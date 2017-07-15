@@ -1,7 +1,15 @@
 const socket = io();
 
 socket.on('connect', function() {
-    console.log('I am connected to server!');
+    var stringParams = window.location.search.slice(1, window.location.search.length);
+    console.log(stringParams);
+    socket.emit('join', stringParams, function(err) {
+        if(err) {
+            alert(err);
+            return window.location.href = '/';
+        }
+        console.log('No error');
+    });
 });
 
 socket.on('disconnect', function() {
