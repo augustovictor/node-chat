@@ -7,8 +7,19 @@
     <title>Document</title>
 </head>
 <body>
-    Welcome to chat
+    <p>Welcome to chat</p>
+
+    <div id="messaged-feed"></div>
+
+    <form id="message-form">
+        <div>
+            <input type="text" id="message-input" name="message" placeholder="Type here...">
+            <button>Send</button>
+        </div>
+    </form>
+
     <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
     <script src="./js/index.js"></script>
 </body>
 </html>

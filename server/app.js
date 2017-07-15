@@ -17,14 +17,15 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
     console.log('New user connected.');
 
-    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat'));
+    socket.emit('newMessageToClient', generateMessage('Admin', 'Welcome to the chat'));
 
-    socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user entered...'));
+    socket.broadcast.emit('newMessageToClient', generateMessage('Admin', 'New user entered...'));
 
-    socket.on('createMessage', message => {
+    socket.on('createMessage', (message, callback) => {
         console.log(message);
-        socket.broadcast.emit('newMessage', generateMessage(message.from, message.content));
-    })
+        io.emit('newMessageToClient', generateMessage(message.from, message.content));
+        callback('Message sent...');
+    });
 
     socket.on('disconnect', () => {
         console.log('User disconnected!');
