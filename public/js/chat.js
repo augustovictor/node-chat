@@ -16,6 +16,14 @@ socket.on('disconnect', function() {
     console.log('I just disconnected!');
 });
 
+socket.on('updateUsersList', function(users) {
+    const usersList = $('<ul></ul>');
+    users.forEach(function(user) {
+        usersList.append(`<li>${user.name}</li>`);
+    });
+    $('#users-list-container').html(usersList);
+});
+
 socket.on('newMessageToClient', message => {
     const msg = `<p>${ message.from } [${ message.createdAt }]: ${ message.content }</p>`;
     $('#messaged-feed').append(msg);
